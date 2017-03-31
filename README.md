@@ -36,7 +36,7 @@ Scene 2 AirJordan Jumpman (Glass Material + Environment Map)
 
 Scene 3 mountains (Texture + Normal Map + Environment Map)
 
-![](./64_eta_1.5.png.png)
+![](./66.png)
 
 
 
