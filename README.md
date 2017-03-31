@@ -53,7 +53,7 @@ Evil Wahoo..(OK, it's just a light problem, too dark)
 
 Normal Map Comparision (left back wall with normal map, right without)
 
-![](./57_100MISWithNormal map.png)  ![](./57_100MIS.png)
+![](./57_100MISWithNormalMap.png)  ![](./57_100MIS.png)
 
 
 
