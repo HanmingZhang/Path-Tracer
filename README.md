@@ -63,6 +63,14 @@ TwoLights Cornell Box
 
 
 
+Veach scene with Naive and direct lighting integrator
+
+![](./5_900Naive_Veach.png)   ![](./5_900Direct_Veach.png) 
+
+
+Glass Ball scene
+
+![](./64_eta_1.5.png) 64_eta 1.5.png
 
 
 
