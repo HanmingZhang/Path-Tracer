@@ -1,0 +1,235 @@
+{
+  "frames" :[
+    {
+    "frameNumber" : 0,
+    "scene" : {
+      "camera" : {
+        "target" : [0, 2.5, 0],
+        "eye" : [0, 5.5, -70],
+        "worldUp" : [0, 1, 0],
+        "fov" : 19.5,
+        "width" : 512,
+        "height": 512
+      },
+      "primitives" : [
+        {
+          "shape": "SquarePlane",
+          "name": "Floor",
+          "material": "matteWhite",
+          "transform": {
+            "translate": [ 0, -7, 0 ],
+            "rotate": [ -90, 0, 0 ],
+            "scale": [ 20, 20, 1 ]
+          }
+        },
+        {
+          "shape": "SquarePlane",
+          "name": "Back Wall",
+          "material": "matteWhite",
+          "transform": {
+            "translate": [ 0, 2.5, 5 ],
+            "rotate": [ 0, 180, 0 ],
+            "scale": [ 20, 20, 1 ]
+          }
+        },
+        {
+          "shape" : "Sphere",
+          "name" : "head",
+          "material" : "chromeMirror",
+          "transform" : {
+            "translate" : [0,6.6,0],
+            "rotate" : [0, 0, 0],
+            "scale" : [0.8, 1, 0.75]
+          }
+        },
+        {
+          "shape" : "Sphere",
+          "name" : "neck",
+          "material" : "chromeMirror",
+          "transform" : {
+            "translate" : [0, 4.6, 0],
+            "rotate" : [0,0,0],
+            "scale" : [0.48, 1.2, 0.55]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "torso",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 0, 1.9, 0 ],
+            "rotate": [ 0, 0, 0 ],
+            "scale": [ 1, 1.5, 1 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left arm1",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ -1.1, 4.3, 0 ],
+            "rotate": [ 6, -4, 65 ],
+            "scale": [ 0.48, 1.5, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left arm2",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ -3, 3.7, 0 ],
+            "rotate": [ 7.5, 2.2, -36.9 ],
+            "scale": [ 0.52, 1.5, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left arm3",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ -3.7, 4.6, 0 ],
+            "rotate": [ 0, 0, 168 ],
+            "scale": [ 0.28, 1.6, 0.33 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "right arm1",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 1, 4.3, 0 ],
+            "rotate": [ 3, 0, -57 ],
+            "scale": [ 0.48, 1.48, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "right arm2",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 3.71, 5.18, 0 ],
+            "rotate": [ 4.5, -13, 99 ],
+            "scale": [ 0.52, 1.5, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "right arm3",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 6.73, 6, 0 ],
+            "rotate": [ 0, 0, 111.3 ],
+            "scale": [ 0.28, 1.62, 0.33 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "plvis",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 0, 0, 0 ],
+            "rotate": [ 0, 0, 90 ],
+            "scale": [ 0.53, 1.55, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left leg1",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ -2.76, -1.94, 0 ],
+            "rotate": [ 0, 0, -50.4 ],
+            "scale": [ 0.53, 2.28, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left leg2",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ -4.03, -5.14, 0 ],
+            "rotate": [ 0, 0, 0 ],
+            "scale": [ 0.53, 2.28, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "right leg1",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 2.65, -2, 0 ],
+            "rotate": [ 0, 0, 40.05 ],
+            "scale": [ 0.53, 2.28, 0.55 ]
+          }
+        },
+        {
+          "shape": "Sphere",
+          "name": "left leg2",
+          "material": "chromeMirror",
+          "transform": {
+            "translate": [ 5.57, -5.27, 0 ],
+            "rotate": [ 0, 0, 41.86 ],
+            "scale": [ 0.53, 2.28, 0.55 ]
+          }
+        }
+      ],
+      "lights" : [
+        {
+          "shape": "SquarePlane",
+          "name": "Light Source",
+          "type": "DiffuseAreaLight",
+          "lightColor": [ 17, 12, 4 ],
+          "intensity": 4,
+          "transform": {
+            "translate": [ 0, 20, 0 ],
+            "rotate": [ 90, 0, 0 ],
+            "scale": [ 6, 6, 1 ]
+          },
+          "isDelta": false,
+          "twoSided": true
+        },
+        {
+          "shape": "Sphere",
+          "name": "Light Medium",
+          "type": "DiffuseAreaLight",
+          "lightColor": [ 1, 1, 1 ],
+          "intensity": 30,
+          "transform": {
+            "translate": [ 16, 16, 0 ],
+            "rotate": [ 0, 0, 0 ],
+            "scale": [ 4, 4, 4 ]
+          },
+          "isDelta": false,
+          "twoSided": false
+        }
+      ],
+      "materials" : [
+        {
+          "type" : "MatteMaterial",
+          "name" : "matteWhite",
+            "Kd" : [0.85, 0.81, 0.78],
+          "sigma": 0
+        },
+        {
+          "type" : "MatteMaterial",
+          "name" : "matteRed",
+          "Kd" : [0.63, 0.065, 0.05],
+          "sigma": 0
+        },
+        {
+          "type": "MatteMaterial",
+          "name": "matteGreen",
+          "Kd": [ 0.14, 0.45, 0.091 ],
+          "sigma": 0
+        },
+        {
+          "type": "MirrorMaterial",
+          "name": "chromeMirror",
+          "Kr": [1, 1, 1],
+          "roughness": 0.05
+        }
+      ]
+    }
+  }
+]
+}
