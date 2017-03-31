@@ -70,7 +70,7 @@ Veach scene with Naive and direct lighting integrator
 
 Glass Ball scene
 
-![](./64_eta_1.5.png) 64_eta 1.5.png
+![](./64_eta_1.5.png.png)
 
 
 
