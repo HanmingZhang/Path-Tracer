@@ -109,7 +109,7 @@ Color3f BSDF::Sample_f(const Vector3f &woW, Vector3f *wiW, const Point2f &xi,
     Vector3f wi = worldToTangent * (*wiW);
     Vector3f wo = worldToTangent * woW;
 
-    *pdf = 0;
+    *pdf = 0.f;
 
     if(sampledType) *sampledType = bxdf->type;
 
@@ -132,13 +132,12 @@ Color3f BSDF::Sample_f(const Vector3f &woW, Vector3f *wiW, const Point2f &xi,
     // If the randomly chosen BxDF is specular,
     // we skip the portions that iterate through
     // all BxDFs and computes the fs and Pdfs
-//    if(bxdf->MatchesFlags(BSDF_SPECULAR)){
+//    if((bxdf->type & BSDF_SPECULAR) == BSDF_SPECULAR){
 //            return result;
 //    }
-//    if(bxdf->type & BSDF_SPECULAR){
-//                return result;
-//    }
-
+    if(bxdf->MatchesFlags(BSDF_SPECULAR)){
+        return result;
+    }
 
 
     // Compute overall PDF with all matching BxDFs

@@ -23,6 +23,8 @@ public:
     // respect to area on the surface.
     virtual Intersection Sample(const Point2f &xi, Float *pdf) const;
 
+    virtual Bounds3f WorldBound() const;
+
     Point3f points[3];
     Normal3f normals[3];
     Point2f uvs[3];
@@ -34,28 +36,14 @@ public:
     Normal3f GetNormal(const Point3f &position) const;
 };
 
-//A mesh just holds a collection of triangles against which one can test intersections.
-//Its primary purpose is to store VBOs for rendering the triangles in OpenGL.
-class Mesh : public Shape
+//A mesh's primary purpose is to store VBOs for rendering the triangles in OpenGL.
+class Mesh : public Drawable
 {
 public:
-    virtual bool Intersect(const Ray &ray, Intersection *isect) const;
-    virtual Point2f GetUVCoordinates(const Point3f &point) const;
-    virtual void ComputeTBN(const Point3f& P, Normal3f* nor, Vector3f* tan, Vector3f* bit) const;
-    // Should return the sum of all triangles' areas
-    virtual float Area() const;
-    virtual void InitializeIntersection(Intersection* isect, float t, Point3f pLocal) const;
-
-    // Sample a point on the surface of the shape and return the PDF with
-    // respect to area on the surface.
-    virtual Intersection Sample(const Point2f &xi, Float *pdf) const;
-
     void create();
+    void LoadOBJ(const QStringRef &filename, const QStringRef &local_path, const Transform& transform);
 
-    void LoadOBJ(const QStringRef &filename, const QStringRef &local_path);
-
-private:
-    QList<Triangle*> faces;
+    QList<std::shared_ptr<Triangle>> faces;
 };
 
 

@@ -32,14 +32,14 @@ Color3f Film::GetColor(const Point2i &pixel)
     return pixels[pixel.x][pixel.y];
 }
 
-void Film::WriteImage(QString path)
+void Film::WriteImage(QString path, int AARate)
 {
     if(QString::compare(path.right(4), QString(".png"), Qt::CaseInsensitive) != 0)
     {
         path.append(QString(".png"));
     }
 
-    Vector2i dims = bounds.Diagonal();
+    Vector2i dims = bounds.Diagonal() / AARate;
 
     QImage output(dims.x, dims.y, QImage::Format_RGB32);
 
@@ -47,8 +47,15 @@ void Film::WriteImage(QString path)
     {
         for(unsigned int j = 0; j < dims.y; j++)
         {
-            Color3f color = (pixels[i][j]) * 255.f;
-            output.setPixel(i, j, QColor(color.r, color.g, color.b).rgb());
+            Color3f color(0.f);
+            float AARate2 = (float)AARate * (float)AARate;
+            for(int p = i * AARate; p < (i + 1) * AARate; p++){
+                for(int q = j * AARate; q < (j + 1) * AARate; q++){
+                    color += ((pixels[p][q]) * 255.f);
+                }
+            }
+            //Color3f color = (pixels[i][j]) * 255.f;
+            output.setPixel(i, j, QColor(color.r / AARate2, color.g / AARate2, color.b / AARate2).rgb());
         }
     }
     output.save(path);

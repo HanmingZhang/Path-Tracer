@@ -31,3 +31,11 @@ void GlassMaterial::ProduceBSDF(Intersection *isect) const
     isect->bsdf->Add(new SpecularBTDF(transmitColor, 1.f, indexOfRefraction, new FresnelDielectric(1.f, indexOfRefraction)));
     
 }
+
+//void GlassMaterial::GetSumOfDiffuseAndSpecularCoefficients(){
+//    float Pr = std::max(Kr.x + Kt.x, std::max(Kr.y + Kt.y, Kr.z + Kt.z));
+
+
+
+
+//}

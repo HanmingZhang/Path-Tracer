@@ -18,13 +18,22 @@ bool Primitive::ProduceBSDF(Intersection *isect) const
     return false;
 }
 
-const AreaLight* Primitive::GetAreaLight() const
+const Light* Primitive::GetLight() const
 {
-    return areaLight.get();
+    return Light.get();
 }
 
 
 const Material* Primitive::GetMaterial() const
 {
     return material.get();
+}
+
+Bounds3f Primitive::WorldBound() const{
+
+    if(shape != nullptr){
+        return shape->WorldBound();
+    }
+
+    else qDebug() << "the shape ptr of this Primitive is null!";
 }

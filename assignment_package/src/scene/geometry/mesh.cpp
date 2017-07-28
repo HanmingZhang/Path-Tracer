@@ -3,29 +3,55 @@
 #include <tinyobj/tiny_obj_loader.h>
 #include <iostream>
 
-float TriArea(const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3)
+Bounds3f Triangle::WorldBound() const
 {
-    return glm::length(glm::cross(p1 - p2, p3 - p2)) * 0.5f;
-}
 
+//    // Transform to local space
+//    Point3f point0 = glm::vec3(transform.invT() * glm::vec4(points[0], 1.0f));
+//    Point3f point1 = glm::vec3(transform.invT() * glm::vec4(points[1], 1.0f));
+//    Point3f point2 = glm::vec3(transform.invT() * glm::vec4(points[2], 1.0f));
+
+    float minX = std::min(points[0].x, std::min(points[1].x, points[2].x));
+    float minY = std::min(points[0].y, std::min(points[1].y, points[2].y));
+    float minZ = std::min(points[0].z, std::min(points[1].z, points[2].z));
+
+    float maxX = std::max(points[0].x, std::max(points[1].x, points[2].x));
+    float maxY = std::max(points[0].y, std::max(points[1].y, points[2].y));
+    float maxZ = std::max(points[0].z, std::max(points[1].z, points[2].z));
+
+
+    if(minX == maxX){
+        std::cout << "triange bounding box x is the same!" << std::endl;
+        minX -= 0.01f;
+        maxX += 0.01f;
+    }
+
+    if(minY == maxY){
+        std::cout << "triange bounding box y is the same!" << std::endl;
+        minY -= 0.01f;
+        maxY += 0.01f;
+    }
+
+    if(minZ == maxZ){
+        std::cout << "triange bounding box z is the same!" << std::endl;
+        minZ -= 0.01f;
+        maxZ += 0.01f;
+    }
+
+
+    return Bounds3f(Point3f(minX, minY, minZ),
+                    Point3f(maxX, maxY, maxZ));
+
+//    Bounds3f local_bounding_box(Point3f(minX, minY, minZ),
+//                                Point3f(maxX, maxY, maxZ));
+
+//    return local_bounding_box.Apply(transform);
+
+}
 
 float Triangle::Area() const
 {
-    //TODO
-    return TriArea(points[0], points[1], points[2]);
-}
-
-float Mesh::Area() const
-{
-    //TODO
-
-    float sumOfArea = 0.0f;
-
-    for(Triangle* each : faces){
-        sumOfArea += each->Area();
-    }
-
-    return sumOfArea;
+    return glm::length(glm::cross(points[0] - points[1], points[2] - points[1])) * 0.5f;
 }
 
 Triangle::Triangle(const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3):
@@ -57,7 +83,10 @@ Triangle::Triangle(const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3
     uvs[2] = t3;
 }
 
-
+float TriArea(const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3)
+{
+    return glm::length(glm::cross(p1 - p2, p3 - p2)) * 0.5f;
+}
 
 //Returns the interpolation of the triangle's three normals based on the point inside the triangle that is given.
 Normal3f Triangle::GetNormal(const Point3f &P) const
@@ -70,9 +99,9 @@ Normal3f Triangle::GetNormal(const Point3f &P) const
 }
 
 
-//The ray in this function is not transformed because it was *already* transformed in Mesh::GetIntersection
 bool Triangle::Intersect(const Ray& r, Intersection* isect) const
 {
+
     //1. Ray-plane intersection
     float t =  glm::dot(planeNormal, (points[0] - r.origin)) / glm::dot(planeNormal, r.direction);
     if(t < 0) return false;
@@ -87,30 +116,7 @@ bool Triangle::Intersect(const Ray& r, Intersection* isect) const
 
     if(s1 >= 0 && s1 <= 1 && s2 >= 0 && s2 <= 1 && s3 >= 0 && s3 <= 1 && fequal(sum, 1.0f)){
         isect->t = t;
-        return true;
-    }
-    return false;
-}
-
-bool Mesh::Intersect(const Ray& r, Intersection* isect) const
-{
-    Ray r_loc = r.GetTransformedCopy(transform.invT());
-    float closest_t = -1.0f;
-    Triangle* closestTri = nullptr;
-    for(int i = 0; i < faces.size(); i++){
-        Intersection isx;
-        if(faces[i]->Intersect(r_loc, &isx)){
-            if(isx.t > 0 && (isx.t < closest_t || closest_t < 0)){
-                closest_t = isx.t;
-                closestTri = faces[i];
-            }
-        }
-    }
-    if(closest_t > 0)
-    {
-        Point3f P = Point3f(closest_t * r_loc.direction + r_loc.origin);
-        closestTri->InitializeIntersection(isect, closest_t, P);
-        this->InitializeIntersection(isect, closest_t, P);
+        InitializeIntersection(isect, t, Point3f(P));
         return true;
     }
     return false;
@@ -120,7 +126,6 @@ void Triangle::InitializeIntersection(Intersection *isect, float t, Point3f pLoc
 {
     isect->point = pLocal;
     isect->uv = GetUVCoordinates(pLocal);
-//    isect->normalGeometric = GetNormal(pLocal);
     ComputeTriangleTBN(pLocal, &(isect->normalGeometric), &(isect->tangent), &(isect->bitangent), isect->uv);
     isect->t = t;
 }
@@ -130,7 +135,6 @@ void Triangle::ComputeTBN(const Point3f &P, Normal3f *nor, Vector3f *tan, Vector
     //Triangle uses ComputeTriangleTBN instead of this function.
 
     ComputeTriangleTBN(P, nor, tan, bit, GetUVCoordinates(P));
-
 }
 
 void Triangle::ComputeTriangleTBN(const Point3f &P, Normal3f *nor, Vector3f *tan, Vector3f *bit, const Point2f &uv) const
@@ -167,17 +171,21 @@ void Triangle::ComputeTriangleTBN(const Point3f &P, Normal3f *nor, Vector3f *tan
     if(std::isnan(tangent.x) ||
        std::isnan(tangent.y) ||
        std::isnan(tangent.z)){
-        std::cout << "TBN triange stop here" << std::endl;
+//        std::cout << "TBN triange stop here" << std::endl;
+        CoordinateSystem((*nor), tan, bit);
     }
     if(std::isnan((*nor).x) ||
        std::isnan((*nor).y) ||
        std::isnan((*nor).z)){
-        std::cout << "TBN triange stop here" << std::endl;
+//        std::cout << "TBN triange stop here" << std::endl;
+        *nor = planeNormal;
+        CoordinateSystem((*nor), tan, bit);
     }
     if(std::isnan(bitangent.x) ||
        std::isnan(bitangent.y) ||
        std::isnan(bitangent.z)){
-        std::cout << "TBN triange stop here" << std::endl;
+//        std::cout << "TBN triange stop here" << std::endl;
+        CoordinateSystem((*nor), tan, bit);
     }
 
 
@@ -189,27 +197,10 @@ void Triangle::ComputeTriangleTBN(const Point3f &P, Normal3f *nor, Vector3f *tan
 }
 
 
-void Mesh::InitializeIntersection(Intersection *isect, float t, Point3f pLocal) const
+Intersection Triangle::Sample(const Point2f &xi, Float *pdf) const
 {
-    isect->point = Point3f(transform.T() * glm::vec4(pLocal, 1));
-
-    ComputeTBN(pLocal, &(isect->normalGeometric), &(isect->tangent), &(isect->bitangent));
-//    isect->uv = GetUVCoordinates(pLocal);
-//    isect->t = t;
-}
-
-void Mesh::ComputeTBN(const Point3f &P, Normal3f *nor, Vector3f *tan, Vector3f *bit) const
-{
-    *nor = transform.invTransT() * (*nor);
-    //TODO: Transform nor, tan, and bit into world space
-    *tan = transform.T3() * (*tan);
-    *bit = transform.T3() * (*bit);
-}
-
-
-Point2f Mesh::GetUVCoordinates(const Point3f &point) const
-{
-    return glm::vec2();
+    //TODO for extra credit
+    return Intersection();
 }
 
 
@@ -222,7 +213,7 @@ Point2f Triangle::GetUVCoordinates(const Point3f &point) const
     return uvs[0] * A0/A + uvs[1] * A1/A + uvs[2] * A2/A;
 }
 
-void Mesh::LoadOBJ(const QStringRef &filename, const QStringRef &local_path)
+void Mesh::LoadOBJ(const QStringRef &filename, const QStringRef &local_path, const Transform &transform)
 {
     QString filepath = local_path.toString(); filepath.append(filename);
     std::vector<tinyobj::shape_t> shapes; std::vector<tinyobj::material_t> materials;
@@ -239,16 +230,16 @@ void Mesh::LoadOBJ(const QStringRef &filename, const QStringRef &local_path)
             std::vector<unsigned int> &indices = shapes[i].mesh.indices;
             for(unsigned int j = 0; j < indices.size(); j += 3)
             {
-                glm::vec3 p1(positions[indices[j]*3], positions[indices[j]*3+1], positions[indices[j]*3+2]);
-                glm::vec3 p2(positions[indices[j+1]*3], positions[indices[j+1]*3+1], positions[indices[j+1]*3+2]);
-                glm::vec3 p3(positions[indices[j+2]*3], positions[indices[j+2]*3+1], positions[indices[j+2]*3+2]);
+                glm::vec3 p1 = glm::vec3(transform.T() * glm::vec4(positions[indices[j]*3], positions[indices[j]*3+1], positions[indices[j]*3+2], 1));
+                glm::vec3 p2 = glm::vec3(transform.T() * glm::vec4(positions[indices[j+1]*3], positions[indices[j+1]*3+1], positions[indices[j+1]*3+2], 1));
+                glm::vec3 p3 = glm::vec3(transform.T() * glm::vec4(positions[indices[j+2]*3], positions[indices[j+2]*3+1], positions[indices[j+2]*3+2], 1));
 
-                Triangle* t = new Triangle(p1, p2, p3);
+                auto t = std::make_shared<Triangle>(p1, p2, p3);
                 if(normals.size() > 0)
                 {
-                    glm::vec3 n1(normals[indices[j]*3], normals[indices[j]*3+1], normals[indices[j]*3+2]);
-                    glm::vec3 n2(normals[indices[j+1]*3], normals[indices[j+1]*3+1], normals[indices[j+1]*3+2]);
-                    glm::vec3 n3(normals[indices[j+2]*3], normals[indices[j+2]*3+1], normals[indices[j+2]*3+2]);
+                    glm::vec3 n1 = transform.invTransT() * glm::vec3(normals[indices[j]*3], normals[indices[j]*3+1], normals[indices[j]*3+2]);
+                    glm::vec3 n2 = transform.invTransT() * glm::vec3(normals[indices[j+1]*3], normals[indices[j+1]*3+1], normals[indices[j+1]*3+2]);
+                    glm::vec3 n3 = transform.invTransT() * glm::vec3(normals[indices[j+2]*3], normals[indices[j+2]*3+1], normals[indices[j+2]*3+2]);
                     t->normals[0] = n1;
                     t->normals[1] = n2;
                     t->normals[2] = n3;
@@ -273,18 +264,4 @@ void Mesh::LoadOBJ(const QStringRef &filename, const QStringRef &local_path)
         //An error loading the OBJ occurred!
         std::cout << errors << std::endl;
     }
-}
-
-
-Intersection Triangle::Sample(const Point2f &xi, Float *pdf) const{
-
-    return Intersection();
-}
-
-
-
-
-Intersection Mesh::Sample(const Point2f &xi, Float *pdf) const{
-
-    return Intersection();
 }

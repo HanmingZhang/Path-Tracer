@@ -2,6 +2,9 @@
 #include <globals.h>
 #include <scene/transform.h>
 #include <raytracing/intersection.h>
+#include <samplers/sampler.h>
+
+#include <warpfunctions.h>
 
 class Intersection;
 
@@ -21,10 +24,16 @@ class Light
     // no energy at all.
     virtual Color3f Le(const Ray &r) const;
 
+    virtual Color3f L(const Intersection &isect, const Vector3f &w) const = 0;
+
     virtual Color3f Sample_Li(const Intersection &ref, const Point2f &xi,
                                                 Vector3f *wi, Float *pdf) const = 0;
 
     virtual float Pdf_Li(const Intersection &ref, const Vector3f &wi) const = 0;
+
+    virtual Ray generatePhotonRay(const Point2f &sample, Sampler *sampler, float *pdf) = 0;
+
+    virtual Color3f GetInitialPhotonPower() const = 0;
 
     QString name; // For debugging
 
@@ -38,5 +47,6 @@ public:
     AreaLight(const Transform &t) : Light(t){}
     // Returns the light emitted from a point on the light's surface _isect_
     // along the direction _w_, which is leaving the surface.
-    virtual Color3f L(const Intersection &isect, const Vector3f &w) const = 0;
+    virtual Color3f L(const Intersection &isect, const Vector3f &w) const {return Color3f(0.f);}
+
 };

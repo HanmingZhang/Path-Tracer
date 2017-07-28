@@ -15,6 +15,7 @@
 #include <integrators/integrator.h>
 
 #include <QTimer>
+#include <QTime>
 #include <QSound>
 
 class QOpenGLTexture;
@@ -25,7 +26,17 @@ enum IntegratorType
     INDIRECT_LIGHTING,
     FULL_LIGHTING,
     NAIVE_LIGHTING,
+    PHOTOMAP_LIGHTING,
+    VOL_LIGHTING,
 };
+
+enum AccelType
+{
+    BVH,
+    KDTREE,
+    NO,
+};
+
 
 class MyGL
     : public GLWidget277
@@ -53,7 +64,13 @@ private:
 
     QSound completeSFX;
 
-    long renderTime;
+    QTime renderTimer;
+
+
+    //bool makeBVH;
+    AccelType accelType;
+
+    int maxBVHPrims;
 
 public:
     explicit MyGL(QWidget *parent = 0);
@@ -100,6 +117,14 @@ public slots:
     void slot_SetRecursionLimit(int);
     void slot_SetProgressiveRender(bool);
     void slot_SetIntegratorType(int);
+    //void slot_UseBVH(bool);
+    void slot_SetMaxBVHPrims(int);
+
+    void slot_SetAccelType(int);
+    void slot_UseLenCam(bool);
+    void slot_SetLenRadius(double);
+
+    void slot_SetAA(int);
 
 signals:
     void sig_ResizeToCamera(int,int);

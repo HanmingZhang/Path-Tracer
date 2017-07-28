@@ -44,7 +44,6 @@ void MirrorMaterial::ProduceBSDF(Intersection *isect) const
 
         MicrofacetDistribution* distrib = new TrowbridgeReitzDistribution(rough, rough);
 //        MicrofacetDistribution* distrib = new BeckmannDistribution(rough, rough);
-
 //        MicrofacetDistribution* distrib = new Blinn(4.0f, rough, rough);
 
         isect->bsdf->Add(new MicrofacetBRDF(color, distrib, new FresnelNoOp()));

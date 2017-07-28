@@ -110,7 +110,7 @@ inline int BSDF::BxDFsMatchingFlags(BxDFType flags) const
 inline bool BSDF::BxDFsHaveSpecularFlags() const{
 
     for(int i = 0; i < numBxDFs; ++i){
-        if (bxdfs[i]->type & BSDF_SPECULAR == BSDF_SPECULAR){
+        if ((bxdfs[i]->type & BSDF_SPECULAR) == BSDF_SPECULAR){
             return true;
         }
     }

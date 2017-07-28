@@ -28,6 +28,10 @@ public:
 
     virtual float Pdf_Li(const Intersection &ref, const Vector3f &wi) const;
 
+    virtual Ray generatePhotonRay(const Point2f &sample, Sampler *sampler, float *pdf);
+
+    virtual Color3f GetInitialPhotonPower() const;
+
     // Member variables
     const Color3f emittedLight;
     std::shared_ptr<Shape> shape;

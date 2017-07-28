@@ -17,5 +17,7 @@ public:
     // respect to area on the surface.
     virtual Intersection Sample(const Point2f &xi, Float *pdf) const;
 
+    virtual Bounds3f WorldBound() const;
+
     void create();
 };

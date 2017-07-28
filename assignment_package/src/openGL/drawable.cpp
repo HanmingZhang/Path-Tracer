@@ -1,10 +1,13 @@
 #include <openGL/drawable.h>
 
+
+
 Drawable::Drawable()
     : bufIdx(QOpenGLBuffer::IndexBuffer),
       bufPos(QOpenGLBuffer::VertexBuffer),
       bufNor(QOpenGLBuffer::VertexBuffer),
-      bufCol(QOpenGLBuffer::VertexBuffer)
+      bufCol(QOpenGLBuffer::VertexBuffer),
+      transform()
 {}
 
 Drawable::~Drawable()

@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <string.h>
 
+
 // Global constants. You may not end up using all of these.
 static const float ShadowEpsilon = 0.0001f;
 static const float RayEpsilon = 0.000005f;
@@ -236,4 +237,41 @@ inline Color3f FrConductor(float cosThetaI, const Color3f &etaI, const Color3f &
 
 inline  Vector3f Reflect(const Vector3f &wo, const Vector3f &n){
     return -wo + 2.0f * glm::dot(wo, n) * n;
+}
+template <typename Predicate>
+int FindInterval(int size, const Predicate &pred) {
+    int first = 0, len = size;
+    while (len > 0) {
+        int half = len >> 1, middle = first + half;
+        // Bisect range based on value of _pred_ at _middle_
+        if (pred(middle)) {
+            first = middle + 1;
+            len -= half + 1;
+        } else
+            len = half;
+    }
+    return glm::clamp(first - 1, 0, size - 2);
+}
+
+static const float Infinity = std::numeric_limits<Float>::infinity();
+
+template <typename T>
+inline bool IsPowerOf2(T v) {
+    return v && !(v & (v - 1));
+}
+
+inline int32_t RoundUpPow2(int32_t v) {
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    return v + 1;
+}
+
+template <typename T>
+inline T Mod(T a, T b) {
+    T result = a - (a / b) * b;
+    return (T)((result < 0) ? result + b : result);
 }

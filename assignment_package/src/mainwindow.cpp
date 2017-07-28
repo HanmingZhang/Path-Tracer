@@ -47,4 +47,10 @@ void MainWindow::slot_DisableGUI(bool b)
     ui->samplesSpinBox->setEnabled(!b);
     ui->recursionSpinBox->setEnabled(!b);
     ui->checkBox_Progressive->setEnabled(!b);
+    //ui->checkBox_BVH->setEnabled(!b);
+    ui->accelSpinBox->setEnabled(!b);
+    ui->spinBox_maxPrims->setEnabled(!b);
+    ui->lenRadiusSpinBox->setEnabled(!b);
+    ui->checkBox_LenCam->setEnabled(!b);
+
 }

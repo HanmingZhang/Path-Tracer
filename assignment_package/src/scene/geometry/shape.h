@@ -4,20 +4,18 @@
 #include <raytracing/intersection.h>
 #include <openGL/drawable.h>
 #include <raytracing/ray.h>
-#include <scene/materials/material.h>
 #include <scene/transform.h>
-#include <pcg32.h>
-
-#include <warpfunctions.h>
+#include <scene/bounds.h>
 
 class Intersection;//Forward declaration because Intersection and Geometry cross-include each other
 class Material;
+
 
 //Geometry is an abstract class since it contains a pure virtual function (i.e. a virtual function that is set to 0)
 class Shape : public Drawable
 {
 public:
-    Shape(): transform()
+    Shape()
     {}
 
     virtual ~Shape(){}
@@ -43,12 +41,10 @@ public:
     // respect to area on the surface.
     virtual Intersection Sample(const Point2f &xi, Float *pdf) const = 0;
 
-
-    Transform transform;
-
-    static pcg32 colorRNG; // Used for setting VBO color data for GL visualizer
-
-
-    // hw 06
     float Pdf(const Intersection &ref, const Vector3f &wi) const;
+
+    virtual Bounds3f WorldBound() const = 0;
 };
+
+
+

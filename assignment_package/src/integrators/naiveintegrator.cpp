@@ -43,6 +43,10 @@ Color3f NaiveIntegrator::Li(const Ray &ray, const Scene &scene, std::shared_ptr<
     // wiW will change here !
     Color3f f_term = isect.bsdf->Sample_f(woW, &wiW, sampler->Get2D(), &pdf);
 
+    // render normal/point, just to debug!
+//    Color3f f_term = glm::clamp(glm::abs(isect.normalGeometric),0.f,1.f);
+//    Color3f f_term = glm::clamp(glm::abs(isect.point),0.f,1.f);
+
     // check pdf
     if(pdf == 0.f){
         return L;
@@ -64,6 +68,7 @@ Color3f NaiveIntegrator::Li(const Ray &ray, const Scene &scene, std::shared_ptr<
     L += (f_term * Li(newRay, scene, sampler, depth - 1) * AbsDot(wiW,glm::normalize(isect.normalGeometric))) / pdf;
 
 
-
     return L;
+
+//    return f_term;
 }

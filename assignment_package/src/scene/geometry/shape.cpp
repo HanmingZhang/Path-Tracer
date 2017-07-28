@@ -1,8 +1,8 @@
 #include "shape.h"
 #include <QDateTime>
 
-pcg32 Shape::colorRNG = pcg32(QDateTime::currentMSecsSinceEpoch());
-
+// pcg32 Shape::colorRNG = pcg32(QDateTime::currentMSecsSinceEpoch());
+pcg32 Drawable::colorRNG = pcg32(QDateTime::currentMSecsSinceEpoch());
 
 void Shape::InitializeIntersection(Intersection *isect, float t, Point3f pLocal) const
 {

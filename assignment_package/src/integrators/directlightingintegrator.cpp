@@ -1,28 +1,50 @@
 #include "directlightingintegrator.h"
 
 
-bool shadowTest(const Ray &ray, const Scene &scene, float distanceFromIsectToLight){
+bool shadowTest(const Ray &ray, const Scene &scene, float distanceFromIsectToLight, const Light *light){
     Intersection test_isect;
     scene.Intersect(ray, &test_isect);
+
+    if(test_isect.t == -1.f || test_isect.objectHit == nullptr){
+        return false;
+    }
+
+
+    //if(test_isect.objectHit->name.contains(QString("Point Light Source")) ||
+    //   test_isect.objectHit->name.contains(QString("Spot Light Source"))) return false;
+
 
     // Since this is direct lighting, we don't consider the transmissive condition here
     // we just compare distances
 
     float test_distance = glm::length(test_isect.point - ray.origin);
 
-    if(test_isect.t > 0.f && fabs(test_distance - distanceFromIsectToLight) < ShadowEpsilon){
+//    if(test_isect.t > 0.f && ((fabs(test_distance - distanceFromIsectToLight) < ShadowEpsilon)
+//                              || test_distance > distanceFromIsectToLight)){
 
+//        return false;
+//    }
+
+//    else return true;
+
+
+//    if(test_isect.objectHit != nullptr){
+//        if(test_isect.objectHit->GetLight() == &light){
+//            return false;
+//        }
+//    }
+
+
+
+    if(test_isect.objectHit->GetLight() == light){
+        return false;
+    }
+    //point light or spot light case
+    else if(test_isect.t > 0.f && test_distance > distanceFromIsectToLight){
         return false;
     }
 
     else return true;
-
-//    if(test_isect.objectHit != nullptr){
-//        if(test_isect.objectHit->GetAreaLight() == &light){
-//            return false;
-//        }
-//    }
-//    else return true;
 }
 
 
@@ -81,7 +103,7 @@ Color3f DirectLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::sh
     // this shadow test method is based on distance
 
     Ray shadowFeelerRay = isect.SpawnRay(glm::normalize(wiW));
-    if(shadowTest(shadowFeelerRay, scene, glm::length(wiW))){
+    if(shadowTest(shadowFeelerRay, scene, glm::length(wiW), scene.lights[lightIdx].get())){
         return Color3f(0.0f);
     }
 

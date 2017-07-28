@@ -60,3 +60,12 @@ Intersection SquarePlane::Sample(const Point2f &xi, Float *pdf) const{
 
     return it;
 }
+
+Bounds3f SquarePlane::WorldBound() const{
+
+    Bounds3f local_bounding_box(Point3f(-0.5f, -0.5f, -0.01f),
+                                Point3f(0.5f, 0.5f, 0.01f));
+
+    return local_bounding_box.Apply(transform);
+
+}

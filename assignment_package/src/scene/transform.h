@@ -17,6 +17,8 @@ public:
     const glm::vec3 &position() const {return translation;}
     const glm::vec3 &getScale() const {return scale;}
 
+    const glm::mat3 RotateT() const;
+
 private:
     glm::vec3 translation;
     glm::vec3 rotation;

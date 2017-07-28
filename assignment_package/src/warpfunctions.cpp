@@ -124,7 +124,6 @@ Point3f WarpFunctions::squareToHemisphereCosine(const Point2f &sample)
     float z = sqrt(std::max(0.0, 1.0 - d.x * d.x - d.y * d.y));
 
     return Point3f(d.x, d.y, z);
-
 }
 
 float WarpFunctions::squareToHemisphereCosinePDF(const Point3f &sample)

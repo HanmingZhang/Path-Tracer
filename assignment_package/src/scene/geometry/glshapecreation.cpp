@@ -4,6 +4,9 @@
 #include "cube.h"
 #include "disc.h"
 #include "mesh.h"
+#include "noshape.h"
+
+#include "implicitsurface.h"
 
 // I've put all of the Shape::create() functions in here to separate the OpenGL pre-visualization
 // code from the path tracer code
@@ -336,6 +339,50 @@ void Cube::create()
 
 
 
+// We use a cube to represent our implicit surface in OpenGL preview scene
+void ImplicitSurface::create(){
+    GLuint cub_idx[CUB_IDX_COUNT];
+    glm::vec3 cub_vert_pos[CUB_VERT_COUNT];
+    glm::vec3 cub_vert_nor[CUB_VERT_COUNT];
+    glm::vec3 cub_vert_col[CUB_VERT_COUNT];
+
+    createCubeVertexPositions(cub_vert_pos);
+    createCubeVertexNormals(cub_vert_nor);
+    createCubeIndices(cub_idx);
+
+
+    Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
+
+    for(int i = 0; i < CUB_VERT_COUNT; i++){
+        cub_vert_col[i] = color;
+    }
+
+    count = CUB_IDX_COUNT;
+
+    bufIdx.create();
+    bufIdx.bind();
+    bufIdx.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufIdx.allocate(cub_idx, CUB_IDX_COUNT * sizeof(GLuint));
+
+    bufPos.create();
+    bufPos.bind();
+    bufPos.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufPos.allocate(cub_vert_pos,CUB_VERT_COUNT * sizeof(glm::vec3));
+
+    bufNor.create();
+    bufNor.bind();
+    bufNor.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufNor.allocate(cub_vert_nor, CUB_VERT_COUNT * sizeof(glm::vec3));
+
+    bufCol.create();
+    bufCol.bind();
+    bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufCol.allocate(cub_vert_col, CUB_VERT_COUNT * sizeof(glm::vec3));
+}
+
+
+
+
 void Disc::create()
 {
     GLuint idx[54];
@@ -404,7 +451,7 @@ void Mesh::create(){
         unsigned int index = 0;
 
         for(int i = 0; i < faces.size(); i++){
-            Triangle* tri = faces[i];
+            Triangle* tri = faces[i].get();
             Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
             vert_pos.push_back(tri->points[0]); vert_nor.push_back(tri->normals[0]); vert_col.push_back(color);
             vert_pos.push_back(tri->points[1]); vert_nor.push_back(tri->normals[1]); vert_col.push_back(color);
@@ -438,3 +485,47 @@ void Mesh::create(){
 
 //This does nothing because individual triangles are not rendered with OpenGL; they are rendered all together in their Mesh.
 void Triangle::create(){}
+
+
+
+
+
+
+
+void NoShape::create()
+{
+    GLuint sph_idx[SPH_IDX_COUNT];
+    glm::vec3 sph_vert_pos[SPH_VERT_COUNT];
+    glm::vec3 sph_vert_nor[SPH_VERT_COUNT];
+    glm::vec3 sph_vert_col[SPH_VERT_COUNT];
+
+    createSphereVertexPositions(sph_vert_pos);
+    createSphereVertexNormals(sph_vert_nor);
+    createSphereIndices(sph_idx);
+    Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
+    for (int i = 0; i < SPH_VERT_COUNT; i++) {
+        sph_vert_col[i] = color;
+    }
+
+    count = SPH_IDX_COUNT;
+
+    bufIdx.create();
+    bufIdx.bind();
+    bufIdx.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufIdx.allocate(sph_idx, SPH_IDX_COUNT * sizeof(GLuint));
+
+    bufPos.create();
+    bufPos.bind();
+    bufPos.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufPos.allocate(sph_vert_pos, SPH_VERT_COUNT * sizeof(glm::vec3));
+
+    bufCol.create();
+    bufCol.bind();
+    bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufCol.allocate(sph_vert_col, SPH_VERT_COUNT * sizeof(glm::vec3));
+
+    bufNor.create();
+    bufNor.bind();
+    bufNor.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufNor.allocate(sph_vert_nor, SPH_VERT_COUNT * sizeof(glm::vec3));
+}

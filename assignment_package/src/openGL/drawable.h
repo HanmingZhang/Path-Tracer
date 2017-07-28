@@ -6,6 +6,8 @@
 #include <QOpenGLFunctions_3_2_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
+#include <scene/transform.h>
+#include <pcg32.h>
 
 // This defines an abstract class which can be rendered by our shader program.
 // Make any geometry a subclass of Drawable in order to render it with the ShaderProgram class.
@@ -27,6 +29,9 @@ public:
     bool bindPos();
     bool bindNor();
     bool bindCol();
+
+    Transform transform;
+    static pcg32 colorRNG; // Used for setting VBO color data for GL visualizer
 
 protected:
     int count;

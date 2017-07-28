@@ -13,9 +13,17 @@ class Integrator : public QRunnable
 {
 public:
     Integrator(Bounds2i bounds, Scene* s, std::shared_ptr<Sampler> sampler, int recursionLimit)
-        : scene(s), camera(&(s->camera)), film(&(s->film)), sampler(sampler),
+        : scene(s), film(&(s->film)), sampler(sampler),
           bounds(bounds), recursionLimit(recursionLimit)
     {
+
+        if(!s->UseThinLenCam){
+            camera = &(s->camera);
+        }
+        else{
+            camera = &(s->lenCamera);
+        }
+
         ClampBounds();
     }
 
@@ -39,7 +47,8 @@ public:
 
 protected:
     Scene const * const scene;
-    Camera const * const camera;			// A pointer to the Camera instance stored in MyGL.
+//    Camera const * const camera;			// A pointer to the Camera instance stored in MyGL.
+    Camera const * camera;
     Film * const film;						// A pointer to the Film instance stored in MyGL.
     std::shared_ptr<Sampler> sampler;       // A pointer to the Sampler that we will use to generate pixel samples for this thread.
 
@@ -49,4 +58,3 @@ protected:
 
 
 
-Color3f GetEnvironmentMapColor(const Ray &ray, const Scene &scene, std::shared_ptr<Sampler> sampler);

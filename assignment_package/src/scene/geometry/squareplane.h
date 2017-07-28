@@ -1,7 +1,7 @@
 #pragma once
 #include <scene/geometry/shape.h>
 
-//A SquarePlane is assumed to have a radius of 1 and a center of <0,0,0>.
+//A SquarePlane is assumed to have a side length of 1 and a center of <0,0,0>.
 //These attributes can be altered by applying a transformation matrix to the SquarePlane.
 class SquarePlane : public Shape
 {
@@ -18,6 +18,8 @@ public:
     // Sample a point on the surface of the shape and return the PDF with
     // respect to area on the surface.
     virtual Intersection Sample(const Point2f &xi, Float *pdf) const;
+
+    virtual Bounds3f WorldBound() const;
 
     void create();
 };

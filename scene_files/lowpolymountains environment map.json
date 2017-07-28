@@ -38,21 +38,8 @@
           },
           "isDelta" : false,
           "twoSided" : true
-        },
-        {
-          "shape" : "SquarePlane",
-          "name" : "Light Source 2",
-          "type" : "DiffuseAreaLight",
-          "lightColor" : [17,12,4],
-          "intensity" : 3,
-          "transform" : {
-            "translate" : [-7,3,-31],
-            "rotate" : [0,0,0],
-            "scale" : [8, 8, 1]
-          },
-          "isDelta" : false,
-          "twoSided" : true
-        }      ],
+        }
+      ],
       "materials" : [
         {
           "type" : "MatteMaterial",
@@ -81,7 +68,6 @@
         }
       ],
 	"environment" : {
-          "shape" : "Sphere",
           "transform" : {
             "translate" : [0,0,0],
             "rotate" : [0,0,0],

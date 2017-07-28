@@ -113,3 +113,12 @@ Intersection Sphere::Sample(const Point2f &xi, Float *pdf) const
 
     return it;
 }
+
+
+Bounds3f Sphere::WorldBound() const{
+    Bounds3f local_bounding_box(Point3f(-1.0f, -1.0f, -1.0f),
+                                Point3f(1.0f, 1.0f, 1.0f));
+
+    return local_bounding_box.Apply(transform);
+
+}

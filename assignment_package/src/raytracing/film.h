@@ -10,8 +10,8 @@ public:
     void SetDimensions(unsigned int w, unsigned int h);
     void SetPixelColor(const Point2i& pixel, const Color3f pixelColor);
     Color3f GetColor(const Point2i& pixel);
-    void WriteImage(const std::string &path);
-    void WriteImage(QString path);
+    void WriteImage(const std::string &path, int AARate);
+    void WriteImage(QString path, int AARate);
     Bounds2i bounds;
     bool IsPixelColorSet(const Point2i& pixel);
 

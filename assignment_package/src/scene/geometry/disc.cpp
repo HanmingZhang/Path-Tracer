@@ -1,4 +1,5 @@
 #include "disc.h"
+#include <warpfunctions.h>
 
 float Disc::Area() const
 {
@@ -74,4 +75,12 @@ Intersection Disc::Sample(const Point2f &xi, Float *pdf) const{
     *pdf = 1.0f / Area();
 
     return it;
+}
+
+
+Bounds3f Disc::WorldBound() const{
+    Bounds3f local_bounding_box(Point3f(-1.0f, -1.0f, -0.01f),
+                                Point3f(1.0f, 1.0f, 0.01f));
+
+    return local_bounding_box.Apply(transform);
 }

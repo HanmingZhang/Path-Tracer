@@ -11,8 +11,13 @@
 #include <integrators/directlightingintegrator.h>
 #include <integrators/naiveintegrator.h>
 #include <integrators/fulllightingintegrator.h>
+#include <integrators/photonmappingintegrator.h>
+#include <integrators/volumeintegrator.h>
+
+
 #include <scene/lights/diffusearealight.h>
 #include <QDateTime>
+
 
 constexpr float screen_quad_pos[] = {
     1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
@@ -26,7 +31,8 @@ MyGL::MyGL(QWidget *parent)
       sampler(new Sampler(100, 0)),
       integratorType(NAIVE_LIGHTING),
       recursionLimit(5),
-      completeSFX(":/include/complete.wav")
+      completeSFX(":/include/complete.wav"),
+      accelType(BVH)
 {
     setFocusPolicy(Qt::ClickFocus);
     render_event_timer.setParent(this);
@@ -38,6 +44,8 @@ MyGL::MyGL(QWidget *parent)
     origin = QPoint(0, 0);
     rubberband_offset = QPoint(0, 0);
     something_rendered = false;
+    //makeBVH = true;
+    maxBVHPrims = 1;
 }
 
 void MyGL::mousePressEvent(QMouseEvent *e)
@@ -139,6 +147,7 @@ void MyGL::initializeGL()
     gl_camera.CopyAttributes(scene.camera);
     rubberband_offset.setX(scene.camera.width);
     rubberband_offset.setY(scene.camera.height);
+
 }
 
 void MyGL::resizeGL(int w, int h)
@@ -177,44 +186,44 @@ void MyGL::paintGL()
 
 void MyGL::GLDrawScene()
 {
-    for(std::shared_ptr<Primitive> g : scene.primitives)
+    for(std::shared_ptr<Drawable> d : scene.drawables)
     {
-        if(g->shape->drawMode() == GL_TRIANGLES)
+        if(d->drawMode() == GL_TRIANGLES)
         {
-            if(g->areaLight != nullptr)
-            {
-                prog_flat.setModelMatrix(g->shape->transform.T());
-                prog_flat.draw(*this, *g->shape);
-            }
-            else
-            {
-                prog_lambert.setModelMatrix(g->shape->transform.T());
-                prog_lambert.draw(*this, *g->shape);
-            }
+//            if(g->areaLight != nullptr)
+//            {
+//                prog_flat.setModelMatrix(g->shape->transform.T());
+//                prog_flat.draw(*this, *g->shape);
+//            }
+//            else
+//            {
+                prog_lambert.setModelMatrix(d->transform.T());
+                prog_lambert.draw(*this, *d);
+//            }
         }
-        else if(g->shape->drawMode() == GL_LINES)
+        else if(d->drawMode() == GL_LINES)
         {
-            prog_flat.setModelMatrix(g->shape->transform.T());
-            prog_flat.draw(*this, *g->shape);
+            prog_flat.setModelMatrix(d->transform.T());
+            prog_flat.draw(*this, *d);
         }
     }
-    for(std::shared_ptr<Light> l : scene.lights)
-    {
-        DiffuseAreaLight* dal = dynamic_cast<DiffuseAreaLight*>(l.get());
-        if(dal != nullptr)
-        {
-            prog_flat.setModelMatrix(dal->shape->transform.T());
-            prog_flat.draw(*this, *dal->shape);
-        }
-    }
+//    for(std::shared_ptr<Light> l : scene.lights)
+//    {
+//        DiffuseAreaLight* dal = dynamic_cast<DiffuseAreaLight*>(l.get());
+//        if(dal != nullptr)
+//        {
+//            prog_flat.setModelMatrix(dal->shape->transform.T());
+//            prog_flat.draw(*this, *dal->shape);
+//        }
+//    }
     prog_flat.setModelMatrix(glm::mat4(1.0f));
     prog_flat.draw(*this, scene.camera);
 }
 
 void MyGL::ResizeToSceneCamera()
 {
-    this->setFixedWidth(scene.camera.width);
-    this->setFixedHeight(scene.camera.height);
+    this->setFixedWidth(scene.camera.width / scene.AARate);
+    this->setFixedHeight(scene.camera.height / scene.AARate);
     rubberband_offset.setX(scene.camera.width);
     rubberband_offset.setY(scene.camera.height);
     //    if(scene.camera.aspect <= 618/432)
@@ -332,6 +341,15 @@ void MyGL::SceneLoadDialog()
     scene.Clear();
     //Load new objects based on the JSON file chosen.
 
+
+    //If we reload a scene, clear old photon map
+    if(scene.isPhotonMapperExist == true){
+        scene.causticPhotonMap.Clear();
+        scene.globalPhotonMap.Clear();
+        scene.isPhotonMapperExist = false;
+    }
+
+
     json_reader.LoadSceneFromFile(file, local_path, scene);
     gl_camera.CopyAttributes(scene.camera);
     ResizeToSceneCamera();
@@ -340,6 +358,55 @@ void MyGL::SceneLoadDialog()
 void MyGL::RenderScene()
 {
     if (is_rendering) {return;}
+
+//    if(makeBVH && !scene.bvh)
+//    {
+//        scene.bvh = new BVHAccel(scene.primitives.toVector().toStdVector(), maxBVHPrims);
+//    }
+//    else if(!makeBVH && scene.bvh)
+//    {
+//        scene.clearBVH();
+//    }
+
+
+//    if(makeBVH && !scene.kdtree)
+//    {
+//        scene.kdtree = new KdTreeAccel(scene.primitives.toVector().toStdVector());
+//    }
+//    else if(!makeBVH && scene.kdtree)
+//    {
+//        scene.clearKdtree();
+//    }
+
+    switch(accelType){
+        case BVH:
+            if(scene.bvh != nullptr){
+                scene.clearBVH();
+            }
+            scene.bvh = new BVHAccel(scene.primitives.toVector().toStdVector(), maxBVHPrims);
+            if(scene.kdtree != nullptr){
+                scene.clearKdtree();
+            }
+            break;
+        case KDTREE:
+            if(scene.kdtree != nullptr){
+                scene.clearKdtree();
+            }
+            scene.kdtree = new KdTreeAccel(scene.primitives.toVector().toStdVector());
+            if(scene.bvh != nullptr){
+                scene.clearBVH();
+            }
+            break;
+        case NO:
+            if(scene.bvh != nullptr){
+                scene.clearBVH();
+            }
+            if(scene.kdtree != nullptr){
+                scene.clearKdtree();
+            }
+            break;
+    }
+
 
     output_filepath = QFileDialog::getSaveFileName(0, QString("Save Image"), QString("../rendered_images"), tr("*.png"));
     if(output_filepath.length() == 0)
@@ -354,7 +421,7 @@ void MyGL::RenderScene()
         progressive_texture = nullptr;
     }
     progressive_texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
-    progressive_texture->setSize(scene.film.bounds.Diagonal().x, scene.film.bounds.Diagonal().y);
+    progressive_texture->setSize(scene.film.bounds.Diagonal().x / scene.AARate, scene.film.bounds.Diagonal().y / scene.AARate);
     progressive_texture->setFormat(QOpenGLTexture::TextureFormat::RGBA32F);
     progressive_texture->allocateStorage();
     // Get the bounds of the camera portion we are going to render
@@ -372,7 +439,24 @@ void MyGL::RenderScene()
     Point2i nTiles((renderExtent.x + tileSize - 1) / tileSize,
                    (renderExtent.y + tileSize - 1) / tileSize);
 
-    renderTime = QDateTime::currentMSecsSinceEpoch();
+    renderTimer.restart();
+
+    // Create Photon map here
+    if(integratorType == PHOTOMAP_LIGHTING && scene.isPhotonMapperExist == false){
+        scene.EmitPhotonsFromLights();
+        scene.isPhotonMapperExist = true;
+    }
+
+
+    if(integratorType == VOL_LIGHTING){
+        scene.InitializeVolGrids();
+
+        float k = 0.1f;
+        float ds = 0.05f;
+        scene.PreCompLightTrGrid(k, ds);
+    }
+
+
 
     // For every tile, begin a render task:
     for(int X = 0; X < nTiles.x; X++)
@@ -402,7 +486,20 @@ void MyGL::RenderScene()
             case NAIVE_LIGHTING:
                 rt = new NaiveIntegrator(tileBounds, &scene, sampler->Clone(seed), recursionLimit);
                 break;
+            case PHOTOMAP_LIGHTING:    
+                rt = new PhotonMappingIntegrator(tileBounds, &scene, sampler->Clone(seed), recursionLimit);
+                break;
+            case VOL_LIGHTING:
+                rt = new VolumeIntegrator(tileBounds, &scene, sampler->Clone(seed), recursionLimit);
+                break;
             }
+
+            //hw 09 test!
+            //scene.camera.sampler = sampler->Clone(seed);
+            if(scene.UseThinLenCam){
+                scene.lenCamera.sampler = sampler->Clone(seed);
+            }
+
 #define MULTITHREAD // Comment this line out to be able to debug with breakpoints.
 #ifdef MULTITHREAD
             QThreadPool::globalInstance()->start(rt);
@@ -430,20 +527,43 @@ void MyGL::GLDrawProgressiveView()
     prog_progressive.bind();
 
     Vector2i dims = scene.film.bounds.Diagonal();
-    std::vector<glm::vec4> texdata(dims.x * dims.y);
 
-    for (unsigned int x = 0; x < dims.x; x++)
+    float AARate2 = (float)scene.AARate * (float)scene.AARate;
+    unsigned int r = scene.AARate;
+
+    std::vector<glm::vec4> texdata(dims.x * dims.y / AARate2);
+
+    for (unsigned int x = 0; x < dims.x / r; x++)
     {
-        for (unsigned int y = 0; y < dims.y; y++)
+        for (unsigned int y = 0; y < dims.y / r; y++)
         {
-            if (scene.film.IsPixelColorSet(Point2i(x, y)))
-            {
-                texdata[x + y * dims.x] = glm::vec4(scene.film.GetColor(Point2i(x, y)), 1.0f);
+
+//            if (scene.film.IsPixelColorSet(Point2i(x, y)))
+//            {
+//                texdata[x + y * dims.x] = glm::vec4(scene.film.GetColor(Point2i(x, y)), 1.0f);
+//            }
+//            else
+//            {
+//                texdata[x + y * dims.x] = glm::vec4(0.0f);
+//            }
+
+            int colorSetNum = 0;
+            glm::vec4 sum(0.f);
+            for(unsigned int p = x * r; p < (x + 1) * r; p++){
+                for(unsigned int q = y * r; q < (y + 1) * r; q++){
+                    if(scene.film.IsPixelColorSet(Point2i(p, q))){
+                        sum += glm::vec4(scene.film.GetColor(Point2i(p, q)), 1.0f);
+                        colorSetNum++;
+                    }
+                }
             }
-            else
-            {
-                texdata[x + y * dims.x] = glm::vec4(0.0f);
+            if(colorSetNum == r * r){
+                texdata[x + y * dims.x / r] = sum / AARate2;
             }
+            else{
+                texdata[x + y * dims.x / r] = glm::vec4(0.0f);
+            }
+
         }
     }
 
@@ -472,11 +592,11 @@ void MyGL::GLDrawProgressiveView()
 
 void MyGL::completeRender()
 {
-    std::cout << "Milliseconds to render: " << QDateTime::currentMSecsSinceEpoch() - renderTime << std::endl;
+    std::cout << "Milliseconds to render: " << renderTimer.elapsed() << std::endl;
     is_rendering = false;
     something_rendered = true;
     render_event_timer.stop();
-    scene.film.WriteImage(output_filepath);
+    scene.film.WriteImage(output_filepath, scene.AARate);
     completeSFX.play();
     emit sig_DisableGUI(false);
 }
@@ -512,5 +632,79 @@ void MyGL::slot_SetIntegratorType(int t)
     case 3:
         integratorType = FULL_LIGHTING;
         break;
+    case 4:
+        integratorType = PHOTOMAP_LIGHTING;
+        break;
+    case 5:
+        integratorType = VOL_LIGHTING;
+        break;
     }
+}
+
+//void MyGL::slot_UseBVH(bool b)
+//{
+//    makeBVH = b;
+//}
+
+void MyGL::slot_SetMaxBVHPrims(int i)
+{
+    maxBVHPrims = i;
+}
+
+
+void MyGL::slot_SetAccelType(int t)
+{
+    switch(t)
+    {
+    case 0:
+        accelType = BVH;
+        break;
+    case 1:
+        accelType = KDTREE;
+        break;
+    case 2:
+        accelType = NO;
+        break;
+    }
+}
+
+
+void MyGL::slot_UseLenCam(bool b){
+
+    scene.UseThinLenCam = b;
+
+}
+
+void MyGL::slot_SetLenRadius(double r){
+
+    scene.lenCamera.setLenPara(r);
+}
+
+void MyGL::slot_SetAA(int t){
+
+    switch(t){
+    case 0:
+        scene.camera.width *= 1;
+        scene.camera.height *= 1;
+        scene.film.SetDimensions(scene.camera.width, scene.camera.height);
+        scene.AARate = 1;
+        ResizeToSceneCamera();
+        break;
+    case 1:
+        scene.camera.width *= 2;
+        scene.camera.height *= 2;
+        scene.film.SetDimensions(scene.camera.width, scene.camera.height);
+        scene.AARate = 2;
+        ResizeToSceneCamera();
+        break;
+
+    case 2:
+        scene.camera.width *= 3;
+        scene.camera.height *= 3;
+        scene.film.SetDimensions(scene.camera.width, scene.camera.height);
+        scene.AARate = 3;
+        ResizeToSceneCamera();
+        break;
+    }
+
 }

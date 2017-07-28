@@ -15,4 +15,5 @@ public:
 };
 
 
-bool shadowTest(const Ray &ray, const Scene &scene, float distanceFromIsectToLight);
+//bool shadowTest(const Ray &ray, const Scene &scene, float distanceFromIsectToLight);
+bool shadowTest(const Ray &ray, const Scene &scene, float distanceFromIsectToLight, const Light* light);

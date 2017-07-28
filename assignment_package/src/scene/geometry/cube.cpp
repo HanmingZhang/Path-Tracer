@@ -44,8 +44,8 @@ bool Cube::Intersect(const Ray& r, Intersection* isect) const
     //Transform the ray
     Ray r_loc = r.GetTransformedCopy(transform.invT());
 
-    float t_n = -1000000;
-    float t_f = 1000000;
+    float t_n = -1000000.0f;
+    float t_f = 1000000.f;
     for(int i = 0; i < 3; i++){
         //Ray parallel to slab check
         if(r_loc.direction[i] == 0){
@@ -174,4 +174,13 @@ glm::vec2 Cube::GetUVCoordinates(const glm::vec3 &point) const
 Intersection Cube::Sample(const Point2f &xi, Float *pdf) const{
 
     return Intersection();
+}
+
+
+Bounds3f Cube::WorldBound() const{
+
+    Bounds3f local_bounding_box(Point3f(-0.5f, -0.5f, -0.5f),
+                                Point3f(0.5f, 0.5f, 0.5f));
+
+    return local_bounding_box.Apply(transform);
 }

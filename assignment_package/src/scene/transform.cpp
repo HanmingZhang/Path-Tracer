@@ -39,3 +39,14 @@ const glm::mat3& Transform::invTransT() const
 {
     return inverse_transpose_worldTransform;
 }
+
+
+ const glm::mat3 Transform::RotateT() const{
+     glm::mat4 rotationMatrix(1.0f);
+
+     rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1,0,0))
+             * glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0,1,0))
+             * glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0,0,1));
+
+     return glm::mat3(rotationMatrix);
+ }

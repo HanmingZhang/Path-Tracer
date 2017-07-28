@@ -5,6 +5,8 @@
 #include <raytracing/ray.h>
 #include <openGL/drawable.h>
 
+#include <samplers/sampler.h>
+
 //A perspective projection camera
 //Receives its eye position and reference point from the scene XML file
 class Camera : public Drawable
@@ -38,9 +40,9 @@ public:
 
     void RecomputeAttributes();
 
-    Ray Raycast(const Point2f &pt) const;         //Creates a ray in 3D space given a 2D point on the screen, in screen coordinates.
-    Ray Raycast(float x, float y) const;            //Same as above, but takes two floats rather than a vec2.
-    Ray RaycastNDC(float ndc_x, float ndc_y) const; //Creates a ray in 3D space given a 2D point in normalized device coordinates.
+    virtual Ray Raycast(const Point2f &pt) const;         //Creates a ray in 3D space given a 2D point on the screen, in screen coordinates.
+    virtual Ray Raycast(float x, float y) const;            //Same as above, but takes two floats rather than a vec2.
+    virtual Ray RaycastNDC(float ndc_x, float ndc_y) const; //Creates a ray in 3D space given a 2D point in normalized device coordinates.
 
     void RotateAboutUp(float deg);
     void RotateAboutRight(float deg);
@@ -53,4 +55,6 @@ public:
     void create();
 
     virtual GLenum drawMode() const;
+
+ //   std::shared_ptr<Sampler> sampler;
 };

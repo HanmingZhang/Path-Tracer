@@ -29,13 +29,7 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
 
         // Terminate path if ray escaped or max depth is reached
         if(!foundIntersection){
-
-            // if there is no intersection, we use environment map!
-            if(scene.environmentBox && depth == recursionLimit){
-
-                return GetEnvironmentMapColor(traceRay, scene, sampler);
-            }
-            else break;
+            break;
         }
 
 
@@ -57,10 +51,12 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
 
         //If this ray is not acamera ray and
         //it hits a light(has not material and thus, no bsdf)
-        if(isect.objectHit->GetAreaLight()){
+//        if(isect.objectHit->GetAreaLight()){
+//             break;
+//        }
+        if(isect.objectHit->GetLight()){
              break;
         }
-
 
         // Compute scattering functions
         isect.ProduceBSDF();
@@ -158,7 +154,7 @@ Color3f EstimateDirect(const Intersection &it,
     // shadow test
     Ray shadowFeelerRay = it.SpawnRay(glm::normalize(wi_Direct));
 
-    if(!shadowTest(shadowFeelerRay, scene, glm::length(wi_Direct)) && lightPdf > 0.f && !IsBlack(Li)){
+    if(!shadowTest(shadowFeelerRay, scene, glm::length(wi_Direct), &light) && lightPdf > 0.f && !IsBlack(Li)){
 
         // we normalize wi here!
         // before we do normalize, we must check wiW is not (0, 0, 0)
@@ -203,6 +199,9 @@ Color3f EstimateDirect(const Intersection &it,
     Color3f f(0.f);
     Vector3f wi_BSDF(0.f);
 
+    lightPdf = 0.f;
+    scatteringPdf = 0.f;
+
     bool sampledSpecular = false;
 
     // Sample scattered direction for surface interactions
@@ -242,7 +241,8 @@ Color3f EstimateDirect(const Intersection &it,
         Color3f Li(0.f);
 
         if(foundIntersection){
-            if(lightIsect.objectHit->GetAreaLight() == &light){
+            //if(lightIsect.objectHit->GetAreaLight() == &light){
+            if(lightIsect.objectHit->GetLight() == &light){
                 Li = lightIsect.Le(-wi_BSDF);
             }
         }

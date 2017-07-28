@@ -2,13 +2,13 @@
 #include <globals.h>
 #include <scene/materials/bsdf.h>
 #include <raytracing/ray.h>
-#include <scene/scene.h>
 #include <scene/geometry/primitive.h>
 #include <QList>
+#include <scene/geometry/primitive.h>
 
 class Material;
-class Scene;
 class BSDF;
+class Primitive;
 
 class Intersection
 {

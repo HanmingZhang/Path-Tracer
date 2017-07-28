@@ -16,6 +16,8 @@ public:
     // A function to generate a collection of stratified samples in a square
     std::vector<Point2f> GenerateStratifiedSamples();
 
+    std::vector<Point2f> GenerateUniformSamples();
+
     int samplesPerPixel;
 
 private:

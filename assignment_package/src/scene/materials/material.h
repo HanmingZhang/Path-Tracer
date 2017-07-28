@@ -1,6 +1,8 @@
 #pragma once
 #include <globals.h>
 #include <raytracing/intersection.h>
+#include <QImage>
+#include <QColor>
 
 
 // A Material is an interface class designed to produce a
@@ -33,7 +35,6 @@ class Material {
     // one can map all sorts of attributes to textures, such as
     // reflectivity, albedo, roughness, and surface normal direction.
 
-
     //----------------------------------------------
     //-------------- normal map --------------------
     //----------------------------------------------
@@ -54,5 +55,7 @@ class Material {
     }
     //----------------------------------------------
 
+
+    //virtual float GetSumOfDiffuseAndSpecularCoefficients() = 0;
 
 };

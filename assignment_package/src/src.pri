@@ -48,7 +48,21 @@ SOURCES += \
     $$PWD/scene/materials/microfacetbrdf.cpp \
     $$PWD/scene/materials/plasticmaterial.cpp \
     $$PWD/scene/materials/microfacetbtdf.cpp \
-    $$PWD/scene/materials/testmaterial.cpp
+    $$PWD/scene/materials/testmaterial.cpp \
+    $$PWD/scene/bounds.cpp \
+    $$PWD/scene/bvh.cpp \
+    $$PWD/scene/kdtree.cpp \
+    $$PWD/scene/thinlenperspectivecamera.cpp \
+    $$PWD/scene/geometry/implicitsurface.cpp \
+    $$PWD/scene/lights/pointlight.cpp \
+    $$PWD/scene/lights/spotlight.cpp \
+    $$PWD/integrators/photonmappingintegrator.cpp \
+    $$PWD/scene/materials/orennayarbrdf.cpp \
+    $$PWD/scene/materials/metal.cpp \
+    $$PWD/distribution2d.cpp \
+    $$PWD/scene/lights/infinite.cpp \
+    $$PWD/integrators/volumeintegrator.cpp \
+    $$PWD/grid3d.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -98,4 +112,20 @@ HEADERS += \
     $$PWD/scene/materials/microfacetbrdf.h \
     $$PWD/scene/materials/plasticmaterial.h \
     $$PWD/scene/materials/microfacetbtdf.h \
-    $$PWD/scene/materials/testmaterial.h
+    $$PWD/scene/materials/testmaterial.h \
+    $$PWD/scene/bounds.h \
+    $$PWD/scene/bvh.h \
+    $$PWD/scene/kdtree.h \
+    $$PWD/scene/thinlenperspectivecamera.h \
+    $$PWD/scene/geometry/implicitsurface.h \
+    $$PWD/scene/lights/pointlight.h \
+    $$PWD/scene/lights/spotlight.h \
+    $$PWD/photonmapper.h \
+    $$PWD/integrators/photonmappingintegrator.h \
+    $$PWD/scene/geometry/noshape.h \
+    $$PWD/scene/materials/orennayarbrdf.h \
+    $$PWD/scene/materials/metal.h \
+    $$PWD/distribution2d.h \
+    $$PWD/scene/lights/infinite.h \
+    $$PWD/integrators/volumeintegrator.h \
+    $$PWD/grid3d.h

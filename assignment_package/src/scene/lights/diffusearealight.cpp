@@ -48,3 +48,35 @@ float DiffuseAreaLight::Pdf_Li(const Intersection &ref, const Vector3f &wi) cons
     return shape->Pdf(ref,wi);
 
 }
+
+Ray DiffuseAreaLight::generatePhotonRay(const Point2f &sample, Sampler *sampler, float *pdf){
+
+    //float pdf = 0.f;
+    //Point2f xi = sampler->Get2D();
+
+    Intersection Origin = shape->Sample(sample, pdf);
+
+    Vector3f Dir = Vector3f(0.f);
+
+    if(twoSided){
+        Dir = WarpFunctions::squareToSphereUniform(sample);
+        //Dir = WarpFunctions::squareToHemisphereCosine()
+    }
+    else{
+        Dir = WarpFunctions::squareToHemisphereCosine(sample);
+    }
+
+    Dir = glm::normalize(Dir);
+
+    Dir = shape->transform.RotateT() * Dir;
+
+    Dir = glm::normalize(Dir);
+
+    return Ray(Origin.point + RayEpsilon * Origin.normalGeometric, Dir);
+
+}
+
+
+Color3f DiffuseAreaLight::GetInitialPhotonPower() const{
+    return emittedLight;
+}

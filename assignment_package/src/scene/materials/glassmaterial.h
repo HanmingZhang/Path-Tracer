@@ -17,6 +17,8 @@ public:
 
     void ProduceBSDF(Intersection *isect) const;
 
+    //virtual float GetSumOfDiffuseAndSpecularCoefficients();
+
 
 private:
     Color3f Kr;                    // The spectral reflection of this material.

@@ -22,5 +22,7 @@ public:
     virtual Intersection Sample(const Intersection &ref, const Point2f &xi,
                                 float *pdf) const;
 
+    virtual Bounds3f WorldBound() const;
+
     void create();
 };

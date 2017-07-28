@@ -17,7 +17,9 @@ bool Intersection::ProduceBSDF()
 
 Color3f Intersection::Le(const Vector3f &wo) const
 {
-    const AreaLight* light = objectHit->GetAreaLight();
+    //const AreaLight* light = objectHit->GetAreaLight();
+    const Light* light = objectHit->GetLight();
+
     return light ? light->L(*this, wo) : Color3f(0.f);
 }
 

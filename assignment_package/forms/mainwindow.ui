@@ -2,13 +2,22 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>610</height>
+    <width>704</width>
+    <height>677</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Path Tracer</string>
@@ -20,7 +29,7 @@
       <item>
        <widget class="MyGL" name="mygl">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>1</horstretch>
           <verstretch>1</verstretch>
          </sizepolicy>
@@ -36,7 +45,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -49,8 +58,8 @@
         </property>
         <property name="baseSize">
          <size>
-          <width>631</width>
-          <height>121</height>
+          <width>649</width>
+          <height>130</height>
          </size>
         </property>
         <property name="title">
@@ -60,9 +69,9 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>20</y>
-           <width>611</width>
-           <height>91</height>
+           <y>10</y>
+           <width>661</width>
+           <height>181</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -89,16 +98,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Recursion limit:</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="4">
            <widget class="QSpinBox" name="recursionSpinBox">
             <property name="minimum">
@@ -112,12 +111,12 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="5">
-           <widget class="QCheckBox" name="checkBox_Progressive">
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Progressive Preview</string>
+             <string>Recursion limit:</string>
             </property>
-            <property name="checked">
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
@@ -130,6 +129,35 @@
             <property name="wordWrap">
              <bool>true</bool>
             </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QCheckBox" name="checkBox_Progressive">
+            <property name="text">
+             <string>Progressive Preview</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QComboBox" name="accelSpinBox">
+            <item>
+             <property name="text">
+              <string>BVH</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Kd-Tree</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="1" column="1" colspan="2">
@@ -154,6 +182,95 @@
               <string>Full Lighting</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Photon Mapping</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Volume</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QSpinBox" name="spinBox_maxPrims">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Max primitives in node:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="checkBox_LenCam">
+            <property name="text">
+             <string>Thin Len Camera</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QDoubleSpinBox" name="lenRadiusSpinBox">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="minimum">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>5.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Len Radius:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>AA:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QComboBox" name="AASpinBox">
+            <item>
+             <property name="text">
+              <string>1x</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>4x</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>9x</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>
@@ -169,8 +286,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>655</width>
-     <height>26</height>
+     <width>704</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -234,6 +351,12 @@
     <slot>slot_SetRecursionLimit(int)</slot>
     <slot>slot_SetProgressiveRender(bool)</slot>
     <slot>slot_SetIntegratorType(int)</slot>
+    <slot>slot_UseBVH(bool)</slot>
+    <slot>slot_SetMaxBVHPrims(int)</slot>
+    <slot>slot_SetAccelType(int)</slot>
+    <slot>slot_UseLenCam(bool)</slot>
+    <slot>slot_SetLenRadius(double)</slot>
+    <slot>slot_SetAA(int)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -262,8 +385,8 @@
    <slot>slot_SetNumSamplesSqrt(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>200</x>
-     <y>499</y>
+     <x>330</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>268</x>
@@ -278,8 +401,8 @@
    <slot>slot_SetRecursionLimit(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>408</x>
-     <y>512</y>
+     <x>551</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>488</x>
@@ -294,8 +417,8 @@
    <slot>slot_SetProgressiveRender(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>555</x>
-     <y>500</y>
+     <x>679</x>
+     <y>524</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>
@@ -310,8 +433,8 @@
    <slot>slot_SetIntegratorType(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>249</x>
-     <y>565</y>
+     <x>330</x>
+     <y>578</y>
     </hint>
     <hint type="destinationlabel">
      <x>246</x>
@@ -332,6 +455,86 @@
     <hint type="destinationlabel">
      <x>491</x>
      <y>567</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_maxPrims</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>mygl</receiver>
+   <slot>slot_SetMaxBVHPrims(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>551</x>
+     <y>579</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>409</x>
+     <y>443</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>accelSpinBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>mygl</receiver>
+   <slot>slot_SetAccelType(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>679</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>584</x>
+     <y>462</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_LenCam</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>mygl</receiver>
+   <slot>slot_UseLenCam(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>619</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>452</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lenRadiusSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>mygl</receiver>
+   <slot>slot_SetLenRadius(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>620</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>462</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AASpinBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>mygl</receiver>
+   <slot>slot_SetAA(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>613</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>445</y>
     </hint>
    </hints>
   </connection>
