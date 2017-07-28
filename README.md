@@ -1,30 +1,104 @@
 Path Tracer
 ======================
 
-University of Pennsylvania, CIS 561: Advanced Computer Graphics, course project
+University of Pennsylvania, CIS 561: Advanced Computer Graphics, Course project
 ------------
 
 
-Ohter Feature
+Features :
 ------------
 
 - Normal Map
 
-- Environment Map 
+- Diffuse are light, point light, spot light, infinite light(Environment Map)
 
-- Different materials (ChromMirror, glass, plastic, etc.)
+- Different materials (Metal, ChromMirror, glass, plastic, etc.)
+
+- Acceleration : BVH / Kd-Tree
+
+- Lens-based Camera
+
+- Implicit Surface Rendering
+
+- Photon Mapper (may take super longer time, but render merges quite well!)
+
+- Volume Rendering
+
 
 
 Rendered Images
 ------------
 
-Scene 1 victory pose (Mirror Material)
+Volume Rendering :
+
+Original Photon Mapper render
+
+![](./renders/hw11_100_400SamplesPM.png)
+
+thin & thick white fog volume render 
+
+![](./renders/hw11_rendered_images7_160000.png)  ![](./renders/hw11_rendered_images7_360000.png)  
+
+
+final volume render we get
+
+![](./renders/hw11_100_400SamplesPM_thin_fog.jpg)  ![](./renders/hw11_100_400SamplesPM_heavy_fog.jpg)  
+
+
+
+
+
+Photon Mapper : Rainbow Box
+
+![](./renders/hw10_61_400SamplePM.png)
+
+
+
+
+Implicit Surface Rendering using Ray-marching
+
+![](./renders/hw9_implicit_surface_62_test8.png)
+
+![](./renders/hw9_implicit_surface_66.png)
+
+![](./renders/hw9_implicit_surface_68_6.png)
+
+
+
+Lens-based Camera with Lens Radius = 1.0 , 5.0, 10.0
+
+![](./renders/hw9_thin_len_60_lensR_1.0_f_30.png)  
+
+![](./renders/hw9_thin_len_60_lensR_5.0_f_30.png)
+
+![](./renders/hw9_thin_len_60_lensR_10.0_f_30.png)
+
+
+
+Complex model rendered within just few minutes (general <10min depends on your computer)with BVH/Kd-Tree and more the 1 hour at least without it.
+
+900 ssp MIS Glass dragon (around 3min rendering time) / 900 ssp MIS Happy Buddha (around 4min rendering time)
+
+![](./renders/hw8_accel_47_900SampleMIS_8recur.png)  ![](./renders/hw8_accel_48_900SampleMIS_8recur.png) 
+
+
+
+
+
+
+
+victory pose (Mirror Material)
 
 ![](./renders/53_900MIS_5recur.png) 
 
 
 
-Scene 2 AirJordan Jumpman (Glass Material + Environment Map)
+Glass cup and ball (Environment Map)
+
+![](./renders/hw10_69_900SampleMIS.png) 
+
+
+AirJordan Jumpman (Glass Material + Environment Map)
 
 ![](./renders/63_4.png)
 
@@ -34,7 +108,7 @@ Scene 2 AirJordan Jumpman (Glass Material + Environment Map)
 
 
 
-Scene 3 mountains (Texture + Normal Map + Environment Map)
+Mountains (Texture + Normal Map + Environment Map)
 
 ![](./renders/66.png)
 
@@ -43,6 +117,11 @@ Scene 3 mountains (Texture + Normal Map + Environment Map)
 Wahoo series
 
 ![](./renders/55_2.png)  ![](./renders/55.png)
+
+
+Wahoo's War(several different color point lights)
+
+![](./renders/hw10_66_900SampleMIS.png)
 
 
 Evil Wahoo..(OK, it's just a light problem, too dark)
