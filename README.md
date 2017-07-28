@@ -29,7 +29,7 @@ Features :
 Rendered Images
 ------------
 
-Volume Rendering :
+- Volume Rendering :
 
 Original Photon Mapper render
 
@@ -48,7 +48,7 @@ final volume render we get
 
 
 
-Photon Mapper : Rainbow Box
+- Photon Mapper : Rainbow Box
 
 ![](./renders/hw10_61_400SamplePM.png)
 
