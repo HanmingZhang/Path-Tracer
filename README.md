@@ -50,36 +50,36 @@ Rendered Images
 
 - Photon Mapper : Rainbow Box
 
-![](./renders/hw10_61_400SamplePM.png)
+  ![](./renders/hw10_61_400SamplePM.png)
 
 
 
 
-Implicit Surface Rendering using Ray-marching
+- Implicit Surface Rendering using Ray-marching
 
-![](./renders/hw9_implicit_surface_62_test8.png)
+  ![](./renders/hw9_implicit_surface_62_test8.png)
 
-![](./renders/hw9_implicit_surface_66.png)
+  ![](./renders/hw9_implicit_surface_66.png)
 
-![](./renders/hw9_implicit_surface_68_6.png)
+  ![](./renders/hw9_implicit_surface_68_6.png)
 
 
 
-Lens-based Camera with Lens Radius = 1.0 , 5.0, 10.0
+- Lens-based Camera with Lens Radius = 1.0 , 5.0, 10.0
 
-![](./renders/hw9_thin_len_60_lensR_1.0_f_30.png)  
+  ![](./renders/hw9_thin_len_60_lensR_1.0_f_30.png)  
 
-![](./renders/hw9_thin_len_60_lensR_5.0_f_30.png)
+  ![](./renders/hw9_thin_len_60_lensR_5.0_f_30.png)
 
-![](./renders/hw9_thin_len_60_lensR_10.0_f_30.png)
+  ![](./renders/hw9_thin_len_60_lensR_10.0_f_30.png)
 
 
 
-Complex model rendered within just few minutes (general <10min depends on your computer)with BVH/Kd-Tree and more the 1 hour at least without it.
+- Complex model rendered within just few minutes (general <10min depends on your computer)with BVH/Kd-Tree and more the 1 hour at least without it.
 
-900 ssp MIS Glass dragon (around 3min rendering time) / 900 ssp MIS Happy Buddha (around 4min rendering time)
+  900 ssp MIS Glass dragon (around 3min rendering time) / 900 ssp MIS Happy Buddha (around 4min rendering time)
 
-![](./renders/hw8_accel_47_900SampleMIS_8recur.png)  ![](./renders/hw8_accel_48_900SampleMIS_8recur.png) 
+  ![](./renders/hw8_accel_47_900SampleMIS_8recur.png)  ![](./renders/hw8_accel_48_900SampleMIS_8recur.png) 
 
 
 
@@ -87,69 +87,69 @@ Complex model rendered within just few minutes (general <10min depends on your c
 
 
 
-victory pose (Mirror Material)
+- victory pose (Mirror Material)
 
-![](./renders/53_900MIS_5recur.png) 
+  ![](./renders/53_900MIS_5recur.png) 
 
 
 
-Glass cup and ball (Environment Map)
+- Glass cup and ball (Environment Map)
 
-![](./renders/hw10_69_900SampleMIS.png) 
+  ![](./renders/hw10_69_900SampleMIS.png) 
 
 
-AirJordan Jumpman (Glass Material + Environment Map)
+- AirJordan Jumpman (Glass Material + Environment Map)
 
-![](./renders/63_4.png)
+  ![](./renders/63_4.png)
 
-(This one actually a little bit light / uv problem, but I think it's a cool mistake)
+- (This one actually a little bit light / uv problem, but I think it's a cool mistake)
 
-![](./renders/63.png)
+  ![](./renders/63.png)
 
 
 
-Mountains (Texture + Normal Map + Environment Map)
+- Mountains (Texture + Normal Map + Environment Map)
 
-![](./renders/66.png)
+  ![](./renders/66.png)
 
 
 
-Wahoo series
+- Wahoo series
 
-![](./renders/55_2.png)  ![](./renders/55.png)
+  ![](./renders/55_2.png)  ![](./renders/55.png)
 
 
-Wahoo's War(several different color point lights)
+- Wahoo's War(several different color point lights)
 
-![](./renders/hw10_66_900SampleMIS.png)
+  ![](./renders/hw10_66_900SampleMIS.png)
 
 
-Evil Wahoo..(OK, it's just a light problem, too dark)
+- Evil Wahoo..(OK, it's just a light problem, too dark)
 
-![](./renders/54_uvProblem.png)
+  ![](./renders/54_uvProblem.png)
 
 
 
-Normal Map Comparision (left back wall with normal map, right without)
+- Normal Map Comparision (left back wall with normal map, right without)
 
-![](./renders/57_100MISWithNormalMap.png)  ![](./renders/57_100MIS.png)
+  ![](./renders/57_100MISWithNormalMap.png)  ![](./renders/57_100MIS.png)
 
 
 
-TwoLights Cornell Box
+- TwoLights Cornell Box
 
-![](./renders/52_5Recursion.png)
+  ![](./renders/52_5Recursion.png)
 
 
 
-Veach scene with Naive and direct lighting integrator
+- Veach scene with Naive and direct lighting integrator
 
-![](./renders/5_900Naive_Veach.png)   ![](./renders/5_900Direct_Veach.png) 
+  ![](./renders/5_900Naive_Veach.png)   ![](./renders/5_900Direct_Veach.png) 
 
 
-Glass Ball scene
+- Glass Ball scene
 
-![](./renders/64_eta_1.5.png.png)
+  ![](./renders/64_eta_1.5.png.png)
 
 
 
