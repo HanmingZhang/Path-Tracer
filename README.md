@@ -31,18 +31,18 @@ Rendered Images
 
 - Volume Rendering :
 
-Original Photon Mapper render
+  Original Photon Mapper render
 
-![](./renders/hw11_100_400SamplesPM.png)
+  ![](./renders/hw11_100_400SamplesPM.png)
 
-thin & thick white fog volume render 
+  thin & thick white fog volume render 
 
-![](./renders/hw11_rendered_images7_160000.png)  ![](./renders/hw11_rendered_images7_360000.png)  
+  ![](./renders/hw11_rendered_images7_160000.png)  ![](./renders/hw11_rendered_images7_360000.png)  
 
 
-final volume render we get
+  final volume render we get
 
-![](./renders/hw11_100_400SamplesPM_thin_fog.jpg)  ![](./renders/hw11_100_400SamplesPM_heavy_fog.jpg)  
+  ![](./renders/hw11_100_400SamplesPM_thin_fog.jpg)  ![](./renders/hw11_100_400SamplesPM_heavy_fog.jpg)  
 
 
 
