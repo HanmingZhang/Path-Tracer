@@ -20,7 +20,7 @@ Features :
 
 - Implicit Surface Rendering
 
-- Photon Mapper (may take super longer time, but render merges quite well!)
+- Photon Mapper (may take super longer time, but render converges quite well!)
 
 - Volume Rendering
 
